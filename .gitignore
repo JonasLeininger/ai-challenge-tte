@@ -178,3 +178,5 @@ poetry.lock
 
 # runs
 artifacts/*
+checkpoints/
+lightning_logs/
