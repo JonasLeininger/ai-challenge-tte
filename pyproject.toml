@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "transaction-transformer-encoder"
+version = "0.1.0"
+description = ""
+authors = ["JonasLeininger <jonas.leininger@gmail.com>"]
+readme = "README.md"
+packages = [{include = "transaction_transformer_encoder"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+apache-beam = {extras = ["gcp"], version = "^2.48.0"} #`poetry add "apache-beam[gcp]"` (see https://stackoverflow.com/a/63169678 and https://stackoverflow.com/a/63311580)
+poethepoet = "^0.19.0"
+google-cloud-bigquery = "^3.10.0"
+db-dtypes = "^1.1.1"
+# ray = {extras = ["data", "serve", "train", "tune"], version = "^2.10.0"}
+google-api-python-client = "^2.125.0"
+cryptography = "^42.0.5"
+google-cloud-secret-manager = "^2.16.1"
+pandas = "^2.2.3"
+
+[tool.poe.tasks]
+# detect which torch version to use depending on os/cuda
+# credits: https://github.com/python-poetry/poetry/issues/4231#issuecomment-1182766775
+install-ltt = "pip install light-the-torch"
+install-pl = "ltt install pytorch-lightning==2.0.2"
+install = ["install-ltt", "install-pl"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry.scripts]
+train = "transaction_transformer_encoder.trainer:fit"
+create_dataset = "transaction_transformer_encoder.data.dataflow_artifact_generator:run"
